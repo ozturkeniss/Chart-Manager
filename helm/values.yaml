@@ -1,0 +1,218 @@
+# Default values for rancher-manager
+# This is a YAML-formatted file.
+
+# Global configuration
+global:
+  environment: production
+  imageRegistry: ""
+  imagePullSecrets: []
+
+# Database configurations
+databases:
+  postgresAuth:
+    enabled: true
+  postgresInventory:
+    enabled: true
+  mongodb:
+    enabled: true
+
+# Cache configuration
+redis:
+  enabled: true
+
+# Message broker configuration
+kafka:
+  enabled: true
+
+# Microservices configuration
+authservice:
+  enabled: true
+  replicaCount: 2
+  image:
+    repository: rancher-manager-authservice
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8081
+  ingress:
+    enabled: false
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  env:
+    DATABASE_URL: "host=rancher-manager-postgres-auth user=postgres password=postgres dbname=auth_db port=5432 sslmode=disable"
+    REDIS_HOST: "rancher-manager-redis-master"
+    REDIS_PORT: "6379"
+    JWT_SECRET: "your-secret-key-here"
+    PORT: "8081"
+
+itemservice:
+  enabled: true
+  replicaCount: 2
+  image:
+    repository: rancher-manager-itemservice
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8082
+  ingress:
+    enabled: false
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  env:
+    MONGO_URI: "mongodb://itemuser:itempassword@rancher-manager-mongodb:27017/item_db"
+    AUTH_SERVICE_ADDR: "authservice:50051"
+    KAFKA_BROKERS: "rancher-manager-kafka:9092"
+
+inventoryservice:
+  enabled: true
+  replicaCount: 2
+  image:
+    repository: rancher-manager-inventoryservice
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8083
+  ingress:
+    enabled: false
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  env:
+    DATABASE_URL: "host=rancher-manager-postgres-inventory user=postgres password=postgres dbname=inventory_db port=5432 sslmode=disable"
+    AUTH_SERVICE_ADDR: "authservice:50051"
+    ITEM_SERVICE_ADDR: "itemservice:50052"
+    KAFKA_BROKERS: "rancher-manager-kafka:9092"
+
+fibergateway:
+  enabled: true
+  replicaCount: 3
+  image:
+    repository: rancher-manager-fibergateway
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    type: LoadBalancer
+    port: 8080
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - host: rancher-manager.local
+        paths:
+          - path: /
+            pathType: Prefix
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  env:
+    AUTH_SERVICE_URL: "http://authservice:8081"
+    ITEM_SERVICE_URL: "http://itemservice:8082"
+    INVENTORY_SERVICE_URL: "http://inventoryservice:8083"
+
+# Monitoring configuration
+monitoring:
+  prometheus:
+    enabled: false
+  grafana:
+    enabled: false
+  jaeger:
+    enabled: false
+
+# PostgreSQL Auth Service Configuration
+postgres-auth:
+  enabled: true
+  auth:
+    database: auth_db
+    username: postgres
+    password: postgres
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+  service:
+    type: ClusterIP
+    port: 5432
+
+# PostgreSQL Inventory Service Configuration
+postgres-inventory:
+  enabled: true
+  auth:
+    database: inventory_db
+    username: postgres
+    password: postgres
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+  service:
+    type: ClusterIP
+    port: 5432
+
+# MongoDB Configuration
+mongodb:
+  enabled: true
+  auth:
+    usernames:
+      - itemuser
+    passwords:
+      - itempassword
+    databases:
+      - item_db
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+  service:
+    type: ClusterIP
+    port: 27017
+
+# Redis Configuration
+redis:
+  enabled: true
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: true
+      size: 5Gi
+  service:
+    type: ClusterIP
+    port: 6379
+
+# Kafka Configuration
+kafka:
+  enabled: true
+  persistence:
+    enabled: true
+    size: 20Gi
+  service:
+    type: ClusterIP
+    port: 9092
+  zookeeper:
+    enabled: true
+    persistence:
+      enabled: true
+      size: 10Gi 

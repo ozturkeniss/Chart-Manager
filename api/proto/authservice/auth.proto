@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package authservice;
+
+option go_package = "rancher-manager/api/proto/authservice";
+
+service AuthService {
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+}
+
+message ValidateTokenRequest {
+  string token = 1;
+}
+
+message ValidateTokenResponse {
+  bool valid = 1;
+  uint32 user_id = 2;
+  string username = 3;
+  string role = 4;
+  string message = 5;
+}
+
+message GetUserRequest {
+  uint32 user_id = 1;
+}
+
+message GetUserResponse {
+  bool success = 1;
+  User user = 2;
+  string message = 3;
+}
+
+message User {
+  uint32 id = 1;
+  string username = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string role = 6;
+  bool is_active = 7;
+} 

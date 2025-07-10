@@ -1,0 +1,18 @@
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.5.6
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.5.6
+- name: mongodb
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.5.29
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 17.10.1
+- name: kafka
+  repository: https://charts.bitnami.com/bitnami
+  version: 32.3.3
+digest: sha256:a5993d7dd3a73aedd6d3fbf08c826513885dfd2b3f3e914976e9f28a79c29774
+generated: "2025-07-11T01:15:32.140077212+03:00"
