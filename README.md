@@ -1,4 +1,4 @@
-# Rancher Manager - Microservices Architecture
+# Inventory Manager - Microservices Architecture
 
 A comprehensive microservices-based inventory management system built with Go, featuring distributed architecture, event-driven communication, and containerized deployment.
 
