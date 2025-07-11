@@ -1,6 +1,6 @@
 # Chart Manager - Microservices Architecture
 
-High-performance, cloud-native inventory management system built with Go microservices, featuring Kubernetes orchestration, Helm deployment automation, and event-driven architecture with Apache Kafka.
+Scalable, production-ready microservices platform built with Go, featuring Kubernetes-native deployment, Helm chart automation, Apache Kafka event streaming, and enterprise-grade monitoring capabilities.
 
 ## Architecture Overview
 
