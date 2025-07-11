@@ -2,6 +2,9 @@
 
 Scalable, production-ready microservices platform built with Go, featuring Kubernetes-native deployment, Helm chart automation, Apache Kafka event streaming, and enterprise-grade monitoring capabilities.
 
+<img width="1536" height="1024" alt="chartmanager" src="https://github.com/user-attachments/assets/1b4f7894-0fba-4117-83c4-e23ec2ffc00c" />
+
+
 ## Architecture Overview
 
 The system is designed as a distributed microservices architecture with the following components:
