@@ -1,6 +1,6 @@
-# Inventory Manager - Microservices Architecture
+# Chart Manager - Microservices Architecture
 
-A comprehensive microservices-based inventory management system built with Go, featuring distributed architecture, event-driven communication, and containerized deployment.
+High-performance, cloud-native inventory management system built with Go microservices, featuring Kubernetes orchestration, Helm deployment automation, and event-driven architecture with Apache Kafka.
 
 ## Architecture Overview
 
